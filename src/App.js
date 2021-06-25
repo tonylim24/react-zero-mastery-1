@@ -13,6 +13,8 @@ class App extends Component {
     };
 
     // Any custom function/method that we created must be bound through the constructor.
+    // Note that if we use arrow functions, we do not need to bind through constructor (Lexical scoping)!
+    // Therefore if we comment this code below, it will still work just fine!
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -40,6 +42,7 @@ class App extends Component {
     );
     return (
       <div className="App">
+        <h1>Monster Rolodex</h1>
         <SearchBox
           placeholder="Search Monsters ..."
           handleChange={this.handleChange}
