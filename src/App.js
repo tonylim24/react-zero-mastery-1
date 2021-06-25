@@ -1,25 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { Component } from "react";
+import CardList from "./components/card-list/card-list.component";
+import { SearchBox } from "./components/search-box/search-box.component";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      monsters: [],
+      searchField: "",
+    };
+  }
+
+  // Use componentDidMount lifecycle method to get API data
+  componentDidMount() {
+    // fetch('https://jsonplaceholder.typicode.com/users').then(response => console.log(response));
+    //fetch('https://jsonplaceholder.typicode.com/users').then(response => response.json()).then(users => console.log(users));
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((response) => response.json())
+      .then((users) => this.setState({ monsters: users }));
+  }
+
+  render() {
+    // Immutability, create a copy of monsters and searchfield from state and store it in const.
+    const { monsters, searchField } = this.state;
+    const filteredMonsters = monsters.filter((monster) =>
+      monster.name.toLowerCase().includes(searchField.toLowerCase())
+    );
+    return (
+      <div className="App">
+        <SearchBox
+          placeholder="Search Monsters ..."
+          onChange={(e) => this.setState({ searchField: e.target.value })}
+        />
+        <CardList monsters={filteredMonsters}>
+          {/* Anything declared inside the component is considered as "children" and could be accessed via props.children */}
+        </CardList>
+      </div>
+    );
+  }
 }
 
 export default App;
+
+// Lesson42
