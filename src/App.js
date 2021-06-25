@@ -11,6 +11,9 @@ class App extends Component {
       monsters: [],
       searchField: "",
     };
+
+    // Any custom function/method that we created must be bound through the constructor.
+    this.handleChange = this.handleChange.bind(this);
   }
 
   // Use componentDidMount lifecycle method to get API data
@@ -22,6 +25,13 @@ class App extends Component {
       .then((users) => this.setState({ monsters: users }));
   }
 
+  handleChange = (e) => {
+    this.setState(
+      { searchField: e.target.value },
+      console.log("searchField: ", this.searchField)
+    );
+  };
+
   render() {
     // Immutability, create a copy of monsters and searchfield from state and store it in const.
     const { monsters, searchField } = this.state;
@@ -32,7 +42,7 @@ class App extends Component {
       <div className="App">
         <SearchBox
           placeholder="Search Monsters ..."
-          onChange={(e) => this.setState({ searchField: e.target.value })}
+          handleChange={this.handleChange}
         />
         <CardList monsters={filteredMonsters}>
           {/* Anything declared inside the component is considered as "children" and could be accessed via props.children */}
